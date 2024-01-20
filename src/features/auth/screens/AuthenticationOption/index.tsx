@@ -34,7 +34,10 @@ export default function AuthenticationOption() {
       <Connect />
 
       <S.ButtonContainer>
-        <Button title="CADASTRE-SE" />
+        <Button
+          title="CADASTRE-SE"
+          onPress={() => navigation.navigate("SignUp")}
+        />
 
         <Spacer height={16} />
 

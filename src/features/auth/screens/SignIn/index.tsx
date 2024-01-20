@@ -1,15 +1,12 @@
 import React from "react";
 import * as S from "./styles";
 
-import { StatusBar, TouchableOpacity } from "react-native";
-
-import { MaterialIcons } from "@expo/vector-icons";
+import { StatusBar } from "react-native";
 
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-import Text from "@global/components/Text";
 import { ISignInCredentials } from "@features/auth/models/auth";
 import { Spacer } from "@global/components/Spacer";
 import { Button } from "@global/components/Button";
@@ -31,6 +28,10 @@ const formSchema = yup.object({
 
 export default function SignIn() {
   const navigation = useNavigation<AuthScreenNavigationProp>();
+
+  const onSubmit = (data: ISignInCredentials) => {
+    console.log("Form data submitted:", data);
+  };
 
   const {
     control,
@@ -96,7 +97,7 @@ export default function SignIn() {
       <Spacer height={80} />
 
       <S.ButtonContainer>
-        <Button title="ENTRAR" />
+        <Button title="ENTRAR" onPress={handleSubmit(onSubmit)} />
       </S.ButtonContainer>
     </S.Container>
   );

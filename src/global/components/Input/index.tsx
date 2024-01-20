@@ -38,7 +38,7 @@ export function Input({
         <Text
           variant="Poppins_500Medium"
           color="LIGHT_BLUE"
-          fontSize={16}
+          fontSize={14}
           style={{
             letterSpacing: 0.15,
             marginBottom: 5,

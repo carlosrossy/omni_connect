@@ -40,7 +40,7 @@ export const ContentInput = styled.View<IContainerProps>`
 export const TextInputNative = styled.TextInput`
   flex: 1;
   color: ${({ theme }) => theme.colors.GRAY_DARK};
-  font-size: ${scale(16)}px;
+  font-size: ${scale(14)}px;
 `;
 
 export const Icon = styled.View<{ isErrored?: boolean }>`
