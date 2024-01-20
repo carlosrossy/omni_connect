@@ -4,7 +4,8 @@ export const colors = {
   BLUE_DARK: "#1A1C3D",
   GRAY: "#e7e7e7",
   LIGHT_GRAY: "#E2E8F0",
-  GRAY_DARK: "#F4F4F4",
+  INPUT_BACKGROUND: "#F4F4F4",
+  GRAY_DARK: "##707070",
   BACKGROUND: "#FDFDFD",
   RED: "#E82B2B",
   LIGHT_RED: "#DB2A2A",
@@ -12,3 +13,4 @@ export const colors = {
   WHITE: "#FFFFFF",
 };
 
+export type IColor = keyof typeof colors;

@@ -6,10 +6,9 @@ import {
   Poppins_700Bold,
 } from "@expo-google-fonts/poppins";
 import React from "react";
+
 import { ActivityIndicator, View } from "react-native";
-import theme from "./src/global/styles/theme";
-import { ThemeProvider } from "styled-components";
-import AuthenticationOption from "@features/auth/AuthenticationOption";
+
 import { AppProvider } from "@global/context";
 import Routes from "@global/routes";
 
@@ -29,7 +28,7 @@ export default function App() {
           justifyContent: "center",
         }}
       >
-        <ActivityIndicator color={"#0062E5"} />
+        <ActivityIndicator color={"#0086FF"} />
       </View>
     );
   }

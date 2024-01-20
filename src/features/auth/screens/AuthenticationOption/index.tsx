@@ -8,8 +8,12 @@ import Text from "@global/components/Text";
 import Connect from "@assets/connecting_teams.svg";
 import { Button } from "@global/components/Button";
 import { Spacer } from "@global/components/Spacer";
+import { AuthScreenNavigationProp } from "@global/routes/auth.routes";
+import { useNavigation } from "@react-navigation/native";
 
 export default function AuthenticationOption() {
+  const navigation = useNavigation<AuthScreenNavigationProp>();
+
   return (
     <S.Container>
       <StatusBar
@@ -34,7 +38,11 @@ export default function AuthenticationOption() {
 
         <Spacer height={16} />
 
-        <Button title="FAZER LOGIN" type="secondary" />
+        <Button
+          title="FAZER LOGIN"
+          type="secondary"
+          onPress={() => navigation.navigate("SignIn")}
+        />
       </S.ButtonContainer>
     </S.Container>
   );

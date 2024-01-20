@@ -4,12 +4,14 @@ import {
   NativeStackNavigationProp,
   createNativeStackNavigator,
 } from "@react-navigation/native-stack";
-import AuthenticationOption from "@features/auth/AuthenticationOption";
+import AuthenticationOption from "@features/auth/screens/AuthenticationOption";
+import SignIn from "@features/auth/screens/SignIn";
 
 const Stack = createNativeStackNavigator();
 
 export type RootAuthRoutesList = {
   AuthenticationOption: undefined;
+  SignIn: undefined;
 };
 
 export type AuthScreenNavigationProp =
@@ -26,6 +28,7 @@ export default function AuthRoutes() {
         name="AuthenticationOption"
         component={AuthenticationOption}
       />
+      <Stack.Screen name="SignIn" component={SignIn} />
     </Stack.Navigator>
   );
 }
