@@ -6,6 +6,7 @@ import {
   initialWindowMetrics,
 } from "react-native-safe-area-context";
 import theme from "@global/styles/theme";
+import { AuthProvider } from "./userAuth";
 
 interface AppProviderProps {
   children: ReactNode;
@@ -15,7 +16,9 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   return (
     <ThemeProvider theme={theme}>
       <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-        <NavigationContainer>{children}</NavigationContainer>
+        <NavigationContainer>
+          <AuthProvider>{children}</AuthProvider>
+        </NavigationContainer>
       </SafeAreaProvider>
     </ThemeProvider>
   );

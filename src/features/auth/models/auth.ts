@@ -15,13 +15,13 @@ export interface ICompleteProfileData {
   sex: string;
   birthDate: Date;
   phone: string;
-  cep: string;
-  state: string;
-  city: string;
-  neighborhood: string;
-  street: string;
-  number: string;
+  postalCode: string;
+  adress: string;
+  adressNumber: string;
   complement: string;
+  neighborhood: string;
+  uf: string;
+  city: string;
 }
   
   

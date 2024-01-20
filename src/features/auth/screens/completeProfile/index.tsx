@@ -21,22 +21,31 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import ModalInformation from "@global/components/ModalInformation";
 import { InputMask } from "@global/components/InputMask";
 import { InputDate } from "@global/components/InputDate";
-import { removeSpecialCharacters } from "@global/utils/verificator";
+import {
+  formatBirthDate,
+  formatCPF,
+  removeSpecialCharacters,
+} from "@global/utils/verificator";
 import ViaCep from "@global/services/cep";
 import Toast from "react-native-toast-message";
 import GenderPicker, { DropdownOption } from "@global/components/Select";
+import { useAuth } from "@global/context/userAuth";
+import { AxiosError } from "axios";
+import { completeProfile } from "@features/auth/services/CompleteProfile";
+import { useMutation } from "@tanstack/react-query";
+import { showUser } from "@features/auth/services/showUser";
 
 const formSchema = yup.object({
   cpf: yup.string().required("CPF é obrigatório"),
-  sex: yup.string().required("Gênero é obrigatório"), 
+  sex: yup.string().required("Gênero é obrigatório"),
   birthDate: yup.date().required("Data de Nascimento é obrigatória"),
   phone: yup.string().required("Telefone é obrigatório"),
-  cep: yup.string().required("CEP é obrigatório"),
-  state: yup.string().required("Estado é obrigatório"),
+  postalCode: yup.string().required("CEP é obrigatório"),
+  uf: yup.string().required("Estado é obrigatório"),
   city: yup.string().required("Cidade é obrigatória"),
   neighborhood: yup.string().required("Bairro é obrigatório"),
-  street: yup.string().required("Rua é obrigatória"),
-  number: yup.string().required("Número é obrigatório"),
+  adress: yup.string().required("Rua é obrigatória"),
+  adressNumber: yup.string().required("Número é obrigatório"),
   complement: yup.string().required("Complemento é obrigatório"),
 });
 
@@ -45,7 +54,10 @@ export default function CompleteProfile() {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [date, setDate] = useState<Date | null>(null);
   const [cepIsLoading, setCepIsLoading] = useState(false);
-  const [selectedGender, setSelectedGender] = useState<DropdownOption | null>(null);
+  const [selectedGender, setSelectedGender] = useState<DropdownOption | null>(
+    null
+  );
+  const { token, userCredentials } = useAuth();
 
   const {
     control,
@@ -65,6 +77,7 @@ export default function CompleteProfile() {
 
   function handleSingIn() {
     handleCloseModal();
+    navigation.navigate("SignIn");
   }
 
   const handleSelectedGender = (selectedGender: DropdownOption | null) => {
@@ -85,9 +98,9 @@ export default function CompleteProfile() {
         console.warn("Cep", response.data);
 
         if (response.data.erro) {
-          setValue("state", "");
+          setValue("uf", "");
           setValue("city", "");
-          setValue("street", "");
+          setValue("adress", "");
           setValue("complement", "");
           setValue("neighborhood", "");
 
@@ -99,12 +112,12 @@ export default function CompleteProfile() {
 
           setCepIsLoading(false);
         } else {
-          setValue("state", response.data.uf);
+          setValue("uf", response.data.uf);
           setValue("city", response.data.localidade);
-          setValue("street", response.data.logradouro);
+          setValue("adress", response.data.logradouro);
           setValue("complement", response.data.complemento!);
           setValue("neighborhood", response.data.bairro);
-          setValue("number", "");
+          setValue("adressNumber", "");
 
           setCepIsLoading(false);
         }
@@ -114,10 +127,53 @@ export default function CompleteProfile() {
     }
   }
 
-  const onSubmit = (data: ICompleteProfileData) => {
-    console.log("Form data submitted:", data);
-    HandleOpenModal();
-  };
+  const { mutate, isLoading } = useMutation(
+    (data: ICompleteProfileData) =>
+      completeProfile({
+        userID: userCredentials?.id!,
+        token: token!,
+        cpf: formatCPF(data.cpf),
+        sex: selectedGender?.value!,
+        birthDate: formatBirthDate(data.birthDate),
+        phone: data.phone,
+        postalCode: data.postalCode,
+        adress: data.adress,
+        adressNumber: data.adressNumber,
+        complement: data.complement,
+        neighborhood: data.neighborhood,
+        uf: data.uf,
+        city: data.city,
+      }),
+    {
+      onSuccess: (data: any) => {
+        console.log(data);
+        HandleOpenModal();
+      },
+      onError: (error: AxiosError) => {
+        if (error.response) {
+          const dataError = error?.response?.data?.errors[0];
+
+          console.log(dataError);
+
+          if (error.response?.status! >= 500) {
+            Toast.show({
+              type: "error",
+              text1: "Erro de servidor",
+              text2: "Tente novamente!",
+            });
+          } else {
+            if (dataError.message === "Já existe um usuário com este email") {
+              Toast.show({
+                type: "error",
+                text1: "Email",
+                text2: "Já existe um usuário com este email",
+              });
+            }
+          }
+        }
+      },
+    }
+  );
 
   return (
     <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
@@ -129,9 +185,9 @@ export default function CompleteProfile() {
         />
 
         <Header
-          title="CADASTRO"
+          title="COMPLETAR CADASTRO"
           top={StatusBar.currentHeight! + 16}
-          onPressLeft={navigation.goBack}
+          // onPressLeft={navigation.goBack}
         />
 
         <Spacer height={80} />
@@ -208,7 +264,7 @@ export default function CompleteProfile() {
 
           <Controller
             control={control}
-            name="cep"
+            name="postalCode"
             rules={{ required: "CEP é obrigatório" }}
             render={({ field: { value, onChange } }) => (
               <InputMask
@@ -222,7 +278,7 @@ export default function CompleteProfile() {
                   onChange(rawText);
                 }}
                 isLoading={cepIsLoading}
-                errors={errors?.cep}
+                errors={errors?.postalCode}
               />
             )}
           />
@@ -231,7 +287,7 @@ export default function CompleteProfile() {
 
           <Controller
             control={control}
-            name="state"
+            name="uf"
             rules={{ required: "Estado é obrigatório" }}
             render={({ field: { value, onChange } }) => (
               <Input
@@ -239,7 +295,7 @@ export default function CompleteProfile() {
                 value={value}
                 title="Estado"
                 placeholder="Estado"
-                errors={errors?.state}
+                errors={errors?.uf}
               />
             )}
           />
@@ -282,7 +338,7 @@ export default function CompleteProfile() {
 
           <Controller
             control={control}
-            name="street"
+            name="adress"
             rules={{ required: "Rua é obrigatório" }}
             render={({ field: { value, onChange } }) => (
               <Input
@@ -290,7 +346,7 @@ export default function CompleteProfile() {
                 value={value}
                 title="Rua"
                 placeholder="Rua"
-                errors={errors?.street}
+                errors={errors?.adress}
               />
             )}
           />
@@ -299,7 +355,7 @@ export default function CompleteProfile() {
 
           <Controller
             control={control}
-            name="number"
+            name="adressNumber"
             rules={{ required: "Numero é obrigatório" }}
             render={({ field: { value, onChange } }) => (
               <Input
@@ -307,7 +363,7 @@ export default function CompleteProfile() {
                 value={value}
                 title="Número"
                 placeholder="Número"
-                errors={errors?.number}
+                errors={errors?.adressNumber}
               />
             )}
           />
@@ -333,7 +389,13 @@ export default function CompleteProfile() {
         <Spacer height={40} />
 
         <S.ButtonContainer>
-          <Button title="CADASTRAR" onPress={handleSubmit(onSubmit)} />
+          <Button
+            title="CADASTRAR"
+            onPress={handleSubmit((data) => {
+              mutate(data);
+            })}
+            activeLoad={isLoading}
+          />
         </S.ButtonContainer>
 
         <ModalInformation

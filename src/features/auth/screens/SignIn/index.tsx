@@ -18,6 +18,8 @@ import Toast from "react-native-toast-message";
 import { AxiosError } from "axios";
 import { singIn } from "@features/auth/services/SingIn";
 import { useMutation } from "@tanstack/react-query";
+import { useAuth } from "@global/context/userAuth";
+import { showUser } from "@features/auth/services/showUser";
 
 const formSchema = yup.object({
   email: yup
@@ -32,10 +34,7 @@ const formSchema = yup.object({
 
 export default function SignIn() {
   const navigation = useNavigation<AuthScreenNavigationProp>();
-
-  // const onSubmit = (data: ISignInCredentials) => {
-  //   console.log("Form data submitted:", data);
-  // };
+  const { setToken, setUserCredentials } = useAuth();
 
   const {
     control,
@@ -44,6 +43,17 @@ export default function SignIn() {
     formState: { errors },
   } = useForm<ISignInCredentials>({ resolver: yupResolver(formSchema) });
 
+  async function handleSuccess(data: any) {
+    setToken(data);
+    try {
+      const userData = await showUser({ token: data });
+
+      setUserCredentials(userData);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  }
+
   const { mutate, isLoading } = useMutation(
     (data: ISignInCredentials) =>
       singIn({
@@ -51,14 +61,14 @@ export default function SignIn() {
         password: data.password,
       }),
     {
-      onSuccess: (data: ISignInCredentials) => {
-        console.log(data);
+      onSuccess: (data: any) => {
+        handleSuccess(data.token.token);
       },
       onError: (error: AxiosError) => {
         if (error.response) {
-          const dataError = error?.response?.data?.errors[0]
+          const dataError = error?.response?.data?.errors[0];
 
-          console.log(dataError.errors)
+          console.log(dataError.errors);
 
           if (error.response?.status! >= 500) {
             Toast.show({
@@ -67,9 +77,7 @@ export default function SignIn() {
               text2: "Tente novamente!",
             });
           } else {
-            if (
-              dataError.message === "Usuário não cadastrado no sistema"
-            ) {
+            if (dataError.message === "Usuário não cadastrado no sistema") {
               Toast.show({
                 type: "error",
                 text1: "Email",
@@ -78,7 +86,7 @@ export default function SignIn() {
             }
             if (
               dataError.message ===
-                "E_INVALID_AUTH_PASSWORD: Password mis-match"
+              "E_INVALID_AUTH_PASSWORD: Password mis-match"
             ) {
               Toast.show({
                 type: "error",
@@ -154,6 +162,7 @@ export default function SignIn() {
           onPress={handleSubmit((data) => {
             mutate(data);
           })}
+          activeLoad={isLoading}
         />
       </S.ButtonContainer>
     </S.Container>

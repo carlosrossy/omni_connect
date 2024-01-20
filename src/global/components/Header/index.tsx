@@ -27,7 +27,7 @@ export function Header({ title, onPressLeft, top }: Props) {
           style={{
             position: "absolute",
             right: 0,
-            left: 35,
+            left: 45,
             width: "80%",
           }}
         >

@@ -19,6 +19,12 @@ import { AuthScreenNavigationProp } from "@global/routes/auth.routes";
 import { Header } from "@global/components/Header";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import ModalInformation from "@global/components/ModalInformation";
+import Toast from "react-native-toast-message";
+import { AxiosError } from "axios";
+import { useMutation } from "@tanstack/react-query";
+import { singUp } from "@features/auth/services/SingUp";
+import { useAuth } from "@global/context/userAuth";
+import { showUser } from "@features/auth/services/showUser";
 
 const formSchema = yup.object({
   name: yup.string().required("Nome é obrigatório"),
@@ -43,6 +49,7 @@ const formSchema = yup.object({
 export default function SignUp() {
   const navigation = useNavigation<AuthScreenNavigationProp>();
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const { setToken, setUserCredentials } = useAuth();
 
   const {
     control,
@@ -59,15 +66,68 @@ export default function SignUp() {
     setOpenModal(true);
   }
 
-  function handleSingIn() {
+  function handleCompleteProfile() {
     handleCloseModal();
     navigation.navigate("CompleteProfile");
   }
 
-  const onSubmit = (data: ISignUpData) => {
-    console.log("Form data submitted:", data);
-    HandleOpenModal();
-  };
+  async function handleSuccess(data: any) {
+    setToken(data);
+    try {
+      const userData = await showUser({token: data});
+
+      setUserCredentials(userData);
+
+      HandleOpenModal();
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  }
+
+  const { mutate, isLoading } = useMutation(
+    (data: ISignUpData) =>
+      singUp({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        passwordConfirmation: data.passwordConfirmation,
+      }),
+    {
+      onSuccess: (data: any) => {
+        handleSuccess(data.token.token);
+      },
+      onError: (error: AxiosError) => {
+        if (error.response) {
+          const dataError = error?.response?.data?.errors[0];
+
+          console.log(dataError.message);
+
+          if (error.response?.status! >= 500) {
+            Toast.show({
+              type: "error",
+              text1: "Erro de servidor",
+              text2: "Tente novamente!",
+            });
+          } else {
+            if (dataError.message === "Já existe um usuário com este email") {
+              Toast.show({
+                type: "error",
+                text1: "Email",
+                text2: "Já existe um usuário com este email",
+              });
+            }
+            if (dataError.message === "As senhas devem ser iguais") {
+              Toast.show({
+                type: "error",
+                text1: "Senhas",
+                text2: "As senhas devem ser iguais",
+              });
+            }
+          }
+        }
+      },
+    }
+  );
 
   return (
     <KeyboardAwareScrollView
@@ -185,7 +245,13 @@ export default function SignUp() {
         <Spacer height={40} />
 
         <S.ButtonContainer>
-          <Button title="CADASTRAR" onPress={handleSubmit(onSubmit)} />
+          <Button
+            title="CADASTRAR"
+            onPress={handleSubmit((data) => {
+              mutate(data);
+            })}
+            activeLoad={isLoading}
+          />
         </S.ButtonContainer>
 
         <ModalInformation
@@ -196,7 +262,7 @@ export default function SignUp() {
           fontSizeDescription={16}
           description="Agora finalize o seu perfil para ter melhor experiência"
           buttonText="CONCLUIR"
-          onPress={handleSingIn}
+          onPress={handleCompleteProfile}
           type="RegistrationCompleted"
         />
       </S.Container>
