@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import * as S from "./styles";
 
 import { StatusBar, TouchableOpacity } from "react-native";
@@ -18,6 +18,7 @@ import { useNavigation } from "@react-navigation/native";
 import { AuthScreenNavigationProp } from "@global/routes/auth.routes";
 import { Header } from "@global/components/Header";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import ModalInformation from "@global/components/ModalInformation";
 
 const formSchema = yup.object({
   name: yup.string().required("Nome é obrigatório"),
@@ -41,10 +42,7 @@ const formSchema = yup.object({
 
 export default function SignUp() {
   const navigation = useNavigation<AuthScreenNavigationProp>();
-
-  const onSubmit = (data: ISignUpData) => {
-    console.log("Form data submitted:", data);
-  };
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
   const {
     control,
@@ -53,8 +51,28 @@ export default function SignUp() {
     formState: { errors },
   } = useForm<ISignUpData>({ resolver: yupResolver(formSchema) });
 
+  function handleCloseModal() {
+    setOpenModal(false);
+  }
+
+  function HandleOpenModal() {
+    setOpenModal(true);
+  }
+
+  function handleSingIn() {
+    handleCloseModal();
+  }
+
+  const onSubmit = (data: ISignUpData) => {
+    console.log("Form data submitted:", data);
+    HandleOpenModal();
+  };
+
   return (
-    <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+    <KeyboardAwareScrollView
+      contentContainerStyle={{ flex: 1 }}
+      showsVerticalScrollIndicator={false}
+    >
       <S.Container>
         <StatusBar
           translucent
@@ -168,6 +186,18 @@ export default function SignUp() {
         <S.ButtonContainer>
           <Button title="CADASTRAR" onPress={handleSubmit(onSubmit)} />
         </S.ButtonContainer>
+
+        <ModalInformation
+          onClose={handleCloseModal}
+          visible={openModal}
+          fontSizeTitle={22}
+          title="Cadastro feito com sucesso!"
+          fontSizeDescription={16}
+          description="Agora finalize o seu perfil para ter melhor experiência"
+          buttonText="CONCLUIR"
+          onPress={handleSingIn}
+          type="RegistrationCompleted"
+        />
       </S.Container>
     </KeyboardAwareScrollView>
   );
