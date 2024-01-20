@@ -1,5 +1,7 @@
 import { PixelRatio } from "react-native";
+import { scale } from "react-native-size-matters";
 import styled, { css } from "styled-components/native";
+import { TextInputMask, TextInputMaskTypeProp } from "react-native-masked-text";
 
 interface IContainerProps {
   isErrored?: boolean;
@@ -36,14 +38,14 @@ export const ContentInput = styled.View<IContainerProps>`
     `}
 `;
 
-export const TextInputNative = styled.TextInput`
+export const TextInputNative = styled(TextInputMask)<{type?: TextInputMaskTypeProp}>`
   flex: 1;
   color: ${({ theme }) => theme.colors.GRAY_DARK};
-  font-size: 16px;
-  margin-left: 20px;
+  font-size: ${scale(14)}px;
+  margin-left: 18px;
 `;
 
-export const IconContainer = styled.View<{ isErrored?: boolean }>`
+export const Icon = styled.View<{ isErrored?: boolean }>`
   margin: 0px 10px;
   align-items: center;
   justify-content: center;
@@ -54,8 +56,10 @@ export const IconContainer = styled.View<{ isErrored?: boolean }>`
     `}
 `;
 
-export const ErrorMessage = styled.Text`
-  color: ${({ theme }) => theme.colors.RED};
-  font-size: 14px;
-  margin-top: 5px;
+export const ButtonEye = styled.TouchableOpacity`
+  margin-right: ${scale(10)}px;
+  height: ${fontScale * 40}px;
+  width: ${fontScale * 40}px;
+  align-items: center;
+  justify-content: center;
 `;

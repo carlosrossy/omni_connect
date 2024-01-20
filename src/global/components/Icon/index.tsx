@@ -1,5 +1,6 @@
 import CloseEye from "@assets/icons/close_eye.svg";
 import OpenEye from "@assets/icons/open_eye.svg";
+import CalendarIcon from "@assets/icons/calendar.svg";
 import { IIconList } from "@global/styles/icons";
 import { IColor } from "@global/styles/colors";
 import theme from "@global/styles/theme";
@@ -25,6 +26,16 @@ export function Icon({ type, error, width = 24, height = 24, color }: Props) {
     ),
     openEye: (
       <OpenEye
+        width={width}
+        height={height}
+        color={
+          color ? (error ? "red" : theme.colors[color]) : theme.colors.GRAY
+        }
+      />
+    ),
+
+    Calendar: (
+      <CalendarIcon
         width={width}
         height={height}
         color={

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import * as S from "./styles";
 import { View, TouchableOpacity, Platform } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 import RNDateTimePicker, {
   DateTimePickerEvent,
@@ -9,6 +10,7 @@ import RNDateTimePicker, {
 import Text from "../Text";
 
 import { FieldError } from "react-hook-form";
+import theme from "@global/styles/theme";
 
 interface InputDateProps {
   value: Date;
@@ -22,10 +24,12 @@ export function InputDate(props: InputDateProps) {
   const [selectedDate, setSelectedDate] = useState<Date>(
     props.value || new Date()
   );
+  const [futureDateError, setFutureDateError] = useState<string | null>(null);
 
   const toggleDatePicker = () => {
     if (props.editable) {
       setShowDatePicker((prevState) => !prevState);
+      setFutureDateError(null);
     }
   };
 
@@ -34,14 +38,41 @@ export function InputDate(props: InputDateProps) {
     selectedDate?: Date
   ) => {
     setShowDatePicker(Platform.OS === "ios");
+
     if (selectedDate) {
-      setSelectedDate(selectedDate);
-      props.onChange(selectedDate);
+      if (isFutureDate(selectedDate)) {
+        setFutureDateError("A data não pode ser no futuro");
+      } else {
+        setSelectedDate(selectedDate);
+        props.onChange(selectedDate);
+        setFutureDateError(null);
+      }
     }
   };
 
+  const isFutureDate = (date: Date) => {
+    const today = new Date();
+    return date > today;
+  };
+
+  const isToday = (date: Date) => {
+    const today = new Date();
+    return (
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
+    );
+  };
+
+  const formattedDate =
+    selectedDate instanceof Date
+      ? isToday(selectedDate)
+        ? ""
+        : selectedDate.toLocaleDateString("pt-BR")
+      : "";
+
   return (
-    <View>
+    <S.Container>
       <S.ContainerHeader>
         <Text
           variant="Poppins_500Medium"
@@ -62,17 +93,21 @@ export function InputDate(props: InputDateProps) {
             placeholder="Data de Nascimento"
             editable={false}
             placeholderTextColor="#707686"
-            value={props.value ? props.value.toISOString().split("T")[0] : ""}
+            value={formattedDate}
           />
           <S.IconContainer>
-            <S.CalendarIcon />
+            <Ionicons
+              name="calendar"
+              size={22}
+              color={theme.colors.GRAY_DARK}
+            />
           </S.IconContainer>
         </S.ContentInput>
       </TouchableOpacity>
 
       {props.errors && (
         <Text variant="Poppins_400Regular" fontSize={12} color="RED">
-          {String(props.errors.message)}
+          {String(props.errors?.message || futureDateError)}
         </Text>
       )}
 
@@ -84,6 +119,6 @@ export function InputDate(props: InputDateProps) {
           onChange={handleDateChange}
         />
       )}
-    </View>
+    </S.Container>
   );
 }

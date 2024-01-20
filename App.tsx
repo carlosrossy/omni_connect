@@ -11,6 +11,7 @@ import { ActivityIndicator, View } from "react-native";
 
 import { AppProvider } from "@global/context";
 import Routes from "@global/routes";
+import Toast from "react-native-toast-message";
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -35,6 +36,7 @@ export default function App() {
   return (
     <AppProvider>
       <Routes />
+      <Toast />
     </AppProvider>
   );
 }

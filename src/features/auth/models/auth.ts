@@ -9,5 +9,18 @@ export interface ISignUpData {
   password: string;
   passwordConfirmation: string;
 }
+
+export interface ICompleteProfileData {
+  cpf: string;
+  birthDate: Date;
+  phone: string;
+  cep: string;
+  state: string;
+  city: string;
+  neighborhood: string;
+  street: string;
+  number: string;
+  complement: string;
+}
   
   

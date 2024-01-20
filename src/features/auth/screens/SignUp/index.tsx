@@ -61,6 +61,7 @@ export default function SignUp() {
 
   function handleSingIn() {
     handleCloseModal();
+    navigation.navigate("CompleteProfile");
   }
 
   const onSubmit = (data: ISignUpData) => {
@@ -70,7 +71,7 @@ export default function SignUp() {
 
   return (
     <KeyboardAwareScrollView
-      contentContainerStyle={{ flex: 1 }}
+      style={{ backgroundColor: "#FDFDFD" }}
       showsVerticalScrollIndicator={false}
     >
       <S.Container>
