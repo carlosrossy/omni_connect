@@ -10,6 +10,8 @@ import { ActivityIndicator, View } from "react-native";
 import theme from "./src/global/styles/theme";
 import { ThemeProvider } from "styled-components";
 import AuthenticationOption from "@features/auth/AuthenticationOption";
+import { AppProvider } from "@global/context";
+import Routes from "@global/routes";
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -32,8 +34,8 @@ export default function App() {
     );
   }
   return (
-    <ThemeProvider theme={theme}>
-      <AuthenticationOption />
-    </ThemeProvider>
+    <AppProvider>
+      <Routes />
+    </AppProvider>
   );
 }
