@@ -12,6 +12,7 @@ export interface ISignUpData {
 
 export interface ICompleteProfileData {
   cpf: string;
+  sex: string;
   birthDate: Date;
   phone: string;
   cep: string;

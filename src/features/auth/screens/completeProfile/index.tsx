@@ -24,9 +24,11 @@ import { InputDate } from "@global/components/InputDate";
 import { removeSpecialCharacters } from "@global/utils/verificator";
 import ViaCep from "@global/services/cep";
 import Toast from "react-native-toast-message";
+import GenderPicker, { DropdownOption } from "@global/components/Select";
 
 const formSchema = yup.object({
   cpf: yup.string().required("CPF é obrigatório"),
+  sex: yup.string().required("Gênero é obrigatório"), 
   birthDate: yup.date().required("Data de Nascimento é obrigatória"),
   phone: yup.string().required("Telefone é obrigatório"),
   cep: yup.string().required("CEP é obrigatório"),
@@ -43,6 +45,7 @@ export default function CompleteProfile() {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [date, setDate] = useState<Date | null>(null);
   const [cepIsLoading, setCepIsLoading] = useState(false);
+  const [selectedGender, setSelectedGender] = useState<DropdownOption | null>(null);
 
   const {
     control,
@@ -63,6 +66,11 @@ export default function CompleteProfile() {
   function handleSingIn() {
     handleCloseModal();
   }
+
+  const handleSelectedGender = (selectedGender: DropdownOption | null) => {
+    setSelectedGender(selectedGender);
+    console.log("Gênero selecionado:", selectedGender);
+  };
 
   const [cepValue, setCepValue] = useState("");
 
@@ -142,6 +150,22 @@ export default function CompleteProfile() {
                 placeholder="CPF"
                 keyboardType="numeric"
                 errors={errors?.cpf}
+              />
+            )}
+          />
+
+          <Spacer height={16} />
+
+          <Controller
+            control={control}
+            name="sex"
+            render={({ field: { value, onChange } }) => (
+              <GenderPicker
+                onSelectGender={(selectedGender: any) =>
+                  handleSelectedGender(selectedGender)
+                }
+                onChange={onChange}
+                errors={errors?.sex}
               />
             )}
           />

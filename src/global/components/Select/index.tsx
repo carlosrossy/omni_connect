@@ -62,8 +62,8 @@ const GenderPicker: React.FC<GenderPickerProps> = ({
       <S.GenreSelectButton onPress={toggleDropdown} isErrored={!!errors}>
         <Text
           variant="Poppins_400Regular"
-          fontSize={16}
-          color={selectedOption ? "GRAY" : "GRAY_DARK"}
+          fontSize={14}
+          color={selectedOption ? "GRAY_DARK" : "GRAY_DARK"}
           style={{ flex: 1, marginLeft: 12 }}
         >
           {selectedOption ? selectedOption.label : "Selecione"}
@@ -71,7 +71,7 @@ const GenderPicker: React.FC<GenderPickerProps> = ({
         <Entypo
           name={isOpen ? "chevron-up" : "chevron-down"}
           size={26}
-          color={theme.colors.BLUE}
+          color={theme.colors.LIGHT_BLUE}
         />
       </S.GenreSelectButton>
 
@@ -106,7 +106,7 @@ const GenderPicker: React.FC<GenderPickerProps> = ({
                 borderBottomColor: theme.colors.GRAY_DARK,
               }}
             >
-              <Text variant="Poppins_500Medium" color="BLUE" fontSize={16}>
+              <Text variant="Poppins_500Medium" color="LIGHT_BLUE" fontSize={14}>
                 {option.label}
               </Text>
             </TouchableOpacity>

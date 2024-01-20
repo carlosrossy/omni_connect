@@ -14,6 +14,10 @@ import { Input } from "@global/components/Input";
 import { useNavigation } from "@react-navigation/native";
 import { AuthScreenNavigationProp } from "@global/routes/auth.routes";
 import { Header } from "@global/components/Header";
+import Toast from "react-native-toast-message";
+import { AxiosError } from "axios";
+import { singIn } from "@features/auth/services/SingIn";
+import { useMutation } from "@tanstack/react-query";
 
 const formSchema = yup.object({
   email: yup
@@ -29,9 +33,9 @@ const formSchema = yup.object({
 export default function SignIn() {
   const navigation = useNavigation<AuthScreenNavigationProp>();
 
-  const onSubmit = (data: ISignInCredentials) => {
-    console.log("Form data submitted:", data);
-  };
+  // const onSubmit = (data: ISignInCredentials) => {
+  //   console.log("Form data submitted:", data);
+  // };
 
   const {
     control,
@@ -39,6 +43,54 @@ export default function SignIn() {
     register,
     formState: { errors },
   } = useForm<ISignInCredentials>({ resolver: yupResolver(formSchema) });
+
+  const { mutate, isLoading } = useMutation(
+    (data: ISignInCredentials) =>
+      singIn({
+        email: data.email,
+        password: data.password,
+      }),
+    {
+      onSuccess: (data: ISignInCredentials) => {
+        console.log(data);
+      },
+      onError: (error: AxiosError) => {
+        if (error.response) {
+          const dataError = error?.response?.data?.errors[0]
+
+          console.log(dataError.errors)
+
+          if (error.response?.status! >= 500) {
+            Toast.show({
+              type: "error",
+              text1: "Erro de servidor",
+              text2: "Tente novamente!",
+            });
+          } else {
+            if (
+              dataError.message === "Usuário não cadastrado no sistema"
+            ) {
+              Toast.show({
+                type: "error",
+                text1: "Email",
+                text2: "Usuário não cadastrado no sistema",
+              });
+            }
+            if (
+              dataError.message ===
+                "E_INVALID_AUTH_PASSWORD: Password mis-match"
+            ) {
+              Toast.show({
+                type: "error",
+                text1: "Senha",
+                text2: "Senha incorreta",
+              });
+            }
+          }
+        }
+      },
+    }
+  );
 
   return (
     <S.Container>
@@ -97,7 +149,12 @@ export default function SignIn() {
       <Spacer height={80} />
 
       <S.ButtonContainer>
-        <Button title="ENTRAR" onPress={handleSubmit(onSubmit)} />
+        <Button
+          title="ENTRAR"
+          onPress={handleSubmit((data) => {
+            mutate(data);
+          })}
+        />
       </S.ButtonContainer>
     </S.Container>
   );

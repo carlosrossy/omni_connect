@@ -11,7 +11,13 @@ import { ActivityIndicator, View } from "react-native";
 
 import { AppProvider } from "@global/context";
 import Routes from "@global/routes";
-import Toast from "react-native-toast-message";
+import Toast, {
+  BaseToast,
+  BaseToastProps,
+  ErrorToast,
+} from "react-native-toast-message";
+import { queryClient } from "@global/config/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -20,6 +26,7 @@ export default function App() {
     Poppins_600SemiBold,
     Poppins_700Bold,
   });
+
   if (!fontsLoaded) {
     return (
       <View
@@ -33,10 +40,40 @@ export default function App() {
       </View>
     );
   }
+
+  const toastConfig = {
+    success: (props: BaseToastProps) => (
+      <BaseToast
+        {...props}
+        style={{ borderLeftColor: "#5FE787" }}
+        contentContainerStyle={{ paddingHorizontal: 15 }}
+        text1Style={{
+          fontSize: 15,
+        }}
+        text2Style={{
+          fontSize: 15,
+        }}
+      />
+    ),
+
+    error: (props: BaseToastProps) => (
+      <ErrorToast
+        {...props}
+        text1Style={{
+          fontSize: 15,
+        }}
+        text2Style={{
+          fontSize: 15,
+        }}
+      />
+    ),
+  };
   return (
     <AppProvider>
-      <Routes />
-      <Toast />
+      <QueryClientProvider client={queryClient}>
+        <Routes />
+        <Toast config={toastConfig}/>
+      </QueryClientProvider>
     </AppProvider>
   );
 }
