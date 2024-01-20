@@ -260,7 +260,7 @@ export default function SignUp() {
           fontSizeTitle={22}
           title="Cadastro feito com sucesso!"
           fontSizeDescription={16}
-          description="Agora finalize o seu perfil para ter melhor experiência"
+          description="Agora finalize o seu perfil para ter accesso aos dados"
           buttonText="CONCLUIR"
           onPress={handleCompleteProfile}
           type="RegistrationCompleted"

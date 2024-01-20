@@ -403,6 +403,8 @@ export default function CompleteProfile() {
           visible={openModal}
           fontSizeTitle={20}
           title="Seu perfil foi finalizado com sucesso!"
+          fontSizeDescription={16}
+          description="Agora entre na aplicação"
           buttonText="OK"
           onPress={handleSingIn}
           type="RegistrationCompleted"
