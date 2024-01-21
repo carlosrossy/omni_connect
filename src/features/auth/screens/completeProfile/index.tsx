@@ -151,24 +151,41 @@ export default function CompleteProfile() {
       },
       onError: (error: AxiosError) => {
         if (error.response) {
-          const dataError = error?.response?.data?.errors[0];
+          const dataErrors = error?.response?.data?.errors;
 
-          console.log(dataError);
+          if (dataErrors && dataErrors.length > 0) {
+            dataErrors.forEach((dataError: any) => {
+              const { field, message } = dataError;
 
-          if (error.response?.status! >= 500) {
+              switch (field) {
+                case "cpf":
+                  Toast.show({
+                    type: "error",
+                    text1: "CPF",
+                    text2: message,
+                  });
+                  break;
+                case "phone":
+                  Toast.show({
+                    type: "error",
+                    text1: "Telefone",
+                    text2: message,
+                  });
+                  break;
+                default:
+                  Toast.show({
+                    type: "error",
+                    text1: "Validation Error",
+                    text2: message,
+                  });
+              }
+            });
+          } else if (error.response.status >= 500) {
             Toast.show({
               type: "error",
               text1: "Erro de servidor",
               text2: "Tente novamente!",
             });
-          } else {
-            if (dataError.message === "Já existe um usuário com este email") {
-              Toast.show({
-                type: "error",
-                text1: "Email",
-                text2: "Já existe um usuário com este email",
-              });
-            }
           }
         }
       },
