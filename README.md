@@ -7,7 +7,6 @@
 Está aplicação foi um desafio técnico para uma vaga de Software Engineer 1.
 
  O objetivo era desenvolver apenas uma única funcionalidade: a de criação de contas de usuário.
-  A api disponibilizada para consumo pode ser encontrada [aqui].
  A api disponibilizada para consumo pode ser encontrada [aqui](https://github.com/carlosrossy/omni_connect_api).
 <br><br>
 
