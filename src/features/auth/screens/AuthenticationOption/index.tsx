@@ -1,7 +1,7 @@
 import React from "react";
 import * as S from "./styles";
 
-import { StatusBar } from "react-native";
+import { StatusBar, useWindowDimensions } from "react-native";
 
 import Text from "@global/components/Text";
 
@@ -13,6 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function AuthenticationOption() {
   const navigation = useNavigation<AuthScreenNavigationProp>();
+  const { width, height } = useWindowDimensions();
 
   return (
     <S.Container>
@@ -31,7 +32,7 @@ export default function AuthenticationOption() {
         >{`Conecte-se\nsem dificuldades`}</Text>
       </S.Header>
 
-      <Connect />
+      <Connect height={height * 0.6} width={width * 0.85}/>
 
       <S.ButtonContainer>
         <Button
