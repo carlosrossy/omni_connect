@@ -10,3 +10,10 @@ export const Container = styled.View`
   align-items: center;
   justify-content: center;
 `;
+
+export const ButtonContainer = styled.View`
+  width: 100%;
+  align-items: center;
+  padding: 0px 45px;
+  margin-bottom: 30px;
+`;

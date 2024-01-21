@@ -6,9 +6,15 @@ import { StatusBar } from "react-native";
 import Text from "@global/components/Text";
 import { Button } from "@global/components/Button";
 import { useAuth } from "@global/context/userAuth";
+import { format } from "date-fns";
+import { formatCPFInApp, getGenderLabel } from "@global/utils/verificator";
 
 export default function Home() {
-  const {logout} = useAuth();
+  const { logout, userCredentials } = useAuth();
+
+  const formattedBirthDate = userCredentials?.birth_date
+    ? format(new Date(userCredentials?.birth_date), "dd/MM/yyyy")
+    : "Data de Nascimento não disponível";
 
   return (
     <S.Container>
@@ -19,10 +25,28 @@ export default function Home() {
       />
 
       <Text variant="Poppins_700Bold" fontSize={20}>
-        ENTROU
+        Bem-vindo, {userCredentials?.name}!
       </Text>
 
-      <Button title="LogOUT" onPress={logout}/>
+      <Text variant="Poppins_400Regular" fontSize={16}>
+        Email: {userCredentials?.email}
+      </Text>
+      <Text variant="Poppins_400Regular" fontSize={16}>
+        Telefone: {userCredentials?.phone}
+      </Text>
+      <Text variant="Poppins_400Regular" fontSize={16}>
+        Data de Nascimento: {formattedBirthDate}
+      </Text>
+      <Text variant="Poppins_400Regular" fontSize={16}>
+        CPF: {formatCPFInApp(userCredentials?.cpf!)}
+      </Text>
+      <Text variant="Poppins_400Regular" fontSize={16}>
+        Sexo: {getGenderLabel(userCredentials?.sex!)}
+      </Text>
+
+      <S.ButtonContainer>
+        <Button title="LogOUT" onPress={logout} />
+      </S.ButtonContainer>
     </S.Container>
   );
 }
