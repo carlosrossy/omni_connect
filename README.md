@@ -2,16 +2,13 @@
   <img alt="OmniConnect" title="OmniConnect" src="./resources/Capa.png" width="80%"/>
 </h1>
 
-
 ## 💻 Projeto
 
 Está aplicação foi um desafio técnico para uma vaga de Software Engineer 1.
 
  O objetivo era desenvolver apenas uma única funcionalidade: a de criação de contas de usuário.
-  A api disponibilizada para consumo pode ser encontrada [aqui].
  A api disponibilizada para consumo pode ser encontrada [aqui](https://github.com/carlosrossy/omni_connect_api).
 <br><br>
-
 
 ## 💬 Informações sobre as funcionalidades
 
@@ -24,7 +21,6 @@ Está aplicação foi um desafio técnico para uma vaga de Software Engineer 1.
 
 - A tela de cadastro exibe os inputs necessário pra fazer o cadastro na aplicação;
 - Nesta tela tambem detem de consumo da api criada.
-
 <br><br>
 
 ### Tela de Login 🆕
@@ -40,7 +36,6 @@ Está aplicação foi um desafio técnico para uma vaga de Software Engineer 1.
 - Nesta tela tambem detem de consumo da api do viaCep que pode ser encontrada [aqui](https://viacep.com.br/).
 - Nesta os inputs relacionados ao cep, são preenchidos automaticamente se o cep for válido;
 <br><br>
-
 
 ## 🎲 Executar aplicação
 ```bash
