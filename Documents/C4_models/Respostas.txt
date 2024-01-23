@@ -1,0 +1,19 @@
+1 -A solução deve ser disponibilizada em Cloud ou On-premise?
+
+Resposta: A solução será disponibilizada na nuvem (Cloud) para garantir escalabilidade, flexibilidade e facilitar o acesso remoto. Isso proporciona maior redundância e facilidade de gerenciamento.
+
+2 -Considerando a participação de 4 pessoas técnicas para o desenvolvimento dessa solução, responda qual ferramenta acreditas ser apropriada para o controle de tarefas da equipe, a ferramenta é ágil?
+
+Resposta: Para o controle de tarefas da equipe, sugiro a utilização do Jira. Essa ferramenta oferece recursos robustos de gerenciamento de projetos, é altamente configurável para se adaptar a metodologias ágeis e proporciona uma visão clara do progresso do trabalho.
+
+3-Você se sente capaz de liderar esta equipe? Por quê?
+
+Resposta: Sim, embora esta seja minha primeira experiência formal em uma função de liderança, estou confiante em minha capacidade de liderar a equipe. Durante minha trajetória, desenvolvi habilidades sólidas de comunicação, adquiri conhecimento técnico relevante para o projeto e mantenho uma abordagem colaborativa que busca promover um ambiente de trabalho eficaz.
+
+4 -Se pudesse sugerir uma melhoria, mudança ou oportunidade. O que seria?
+
+Resposta: Como sugestão para aprimorar o processo, proponho a implementação de um programa de mentoria interno. Isso pode ser valioso, especialmente para membros mais juniores da equipe, promovendo o compartilhamento de conhecimento e fortalecendo os laços de colaboração.
+
+5- Acha válido esse desafio para o processo que está participando?
+
+Resposta: Sim, considero o desafio extremamente válido. Ele oferece uma oportunidade para avaliar minhas habilidades técnicas e capacidade de tomada de decisões em um contexto prático
