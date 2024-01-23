@@ -7,6 +7,7 @@
 Está aplicação foi um desafio técnico para uma vaga de Software Engineer 1.
 
  O objetivo era desenvolver apenas uma única funcionalidade: a de criação de contas de usuário.
+ <br>
  A api disponibilizada para consumo pode ser encontrada [aqui](https://github.com/carlosrossy/omni_connect_api).
 <br><br>
 
@@ -25,7 +26,7 @@ Está aplicação foi um desafio técnico para uma vaga de Software Engineer 1.
 
 ### Tela de Login 🆕
 
-- A tela de Login exibe os inputs necessário pra fazer o login na aplicação;
+- A tela de Login exibe os inputs necessário pra fazer o login na aplicação.
 - Nesta tela tambem detem de consumo da api criada.
 <br><br>
 
@@ -50,8 +51,14 @@ $ yarn
 
 # Execute a aplicação
 $ npx expo start
+- Via Cabo ou instalando o ExpoGo
 
 ```
+
+## 📄 Documentos
+  
+- Existe uma pasta com os documentos de Digrama de de Arquitetura e de Solução feitos com **[C4 Model](https://c4model.com/)**.
+<br><br>
 
 ## 🚀 Tecnologias ultilizadas
 
