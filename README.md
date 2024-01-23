@@ -55,6 +55,16 @@ $ npx expo start
 
 ```
 
+## Outras informações
+
+- No link Abaixo pode ser encontrado o arquivo .apk da aplicação.
+**[Aplicativo OmniConnect.](https://drive.google.com/drive/folders/1irEGBgAlAWmYDGW1YMBC_PXyCI94o4dX)**.<br>
+
+- Este arquivo foi gerado ultilizando Expo(EAS).
+
+- A primiera requisição pode levar um tempinho, pois o serviço é gratuito.
+
+
 ## 📄 Documentos
   
 - Existe uma pasta com os documentos de Digrama de de Arquitetura e de Solução feitos com **[C4 Model](https://c4model.com/)**.
