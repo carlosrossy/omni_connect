@@ -48,3 +48,9 @@ export function formatName(name: string) {
 
   return name;
 }
+
+export function formatDateString(dateString: string) {
+  const datePart = dateString.slice(0, 10);
+  const [year, month, day] = datePart.split("-");
+  return `${day}/${month}/${year}`;
+}

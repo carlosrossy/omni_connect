@@ -6,9 +6,10 @@ import { StatusBar } from "react-native";
 import Text from "@global/components/Text";
 import { Button } from "@global/components/Button";
 import { useAuth } from "@global/context/userAuth";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import {
   formatCPFInApp,
+  formatDateString,
   formatName,
   getGenderLabel,
 } from "@global/utils/verificator";
@@ -18,8 +19,9 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 export default function Home() {
   const { logout, userCredentials } = useAuth();
 
-  const formattedBirthDate = userCredentials?.birth_date
-    ? format(new Date(userCredentials?.birth_date), "dd/MM/yyyy")
+  const birthDateString = userCredentials?.birth_date;
+  const formattedBirthDate = birthDateString
+    ? formatDateString(birthDateString)
     : "Data de Nascimento não disponível";
 
   return (
