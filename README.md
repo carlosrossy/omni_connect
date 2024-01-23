@@ -58,6 +58,7 @@ $ npx expo start
 ## 📄 Documentos
   
 - Existe uma pasta com os documentos de Digrama de de Arquitetura e de Solução feitos com **[C4 Model](https://c4model.com/)**.
+- O link para navegar ate a pasta **[Documents](https://github.com/carlosrossy/omni_connect/tree/main/Documents/C4_models)**. 
 <br><br>
 
 ## 🚀 Tecnologias ultilizadas
