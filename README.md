@@ -58,7 +58,7 @@ $ npx expo start
 ## Outras informações
 
 - No link Abaixo pode ser encontrado o arquivo .apk da aplicação.
-**[Aplicativo OmniConnect.](https://drive.google.com/drive/folders/1irEGBgAlAWmYDGW1YMBC_PXyCI94o4dX)**.<br>
+**[Aplicativo OmniConnect.](https://drive.google.com/drive/folders/1irEGBgAlAWmYDGW1YMBC_PXyCI94o4dX?usp=drive_link)**.<br>
 
 - Este arquivo foi gerado ultilizando Expo(EAS).
 
